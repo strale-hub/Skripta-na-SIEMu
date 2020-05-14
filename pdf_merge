@@ -1,0 +1,46 @@
+import os
+import datetime
+from PyPDF2 import PdfFileMerger, PdfFileWriter
+
+
+
+#Odredjivanje datuma
+current_date = datetime.datetime.now()
+new_month = current_date.month
+old_month = new_month-1
+new_month_str_t = str(new_month)
+old_month_str_t = str(old_month)
+
+if new_month < 10:
+    new_month_str = '0' + new_month_str_t
+if old_month < 10:
+    old_month_str = '0' + old_month_str_t
+
+old_Report = "Rezultat" + old_month_str + ".pdf"
+new_Report = "Rezultat" + new_month_str + ".pdf"
+montly_Report = "Report_Name_Montly"
+#print(old_Report)
+#print(new_Report)
+
+
+#Pronalazenje rezultnog pdf- i reporta iz tog meseca
+path = "C:\\Users\\strahinja.soskic\\Desktop\\BackUP\\Programiranje\\Python\\CSV_python\\"
+pdfs = []
+# r=root, d=directories, p = pdfs
+for r,d,p in os.walk(path):
+    for pdf in p:
+        if (old_Report in pdf or ('Report_Name_Montly' in pdf and '.pdf' in pdf and pdf[24:26] == old_month_str)): #Ovde treba promenti ime reporta i opseg gde se nalaze karakteri za mesec
+            pdfs.append(os.path.join(r, pdf))
+print(pdfs)
+
+
+#Spajanje pdf-ova
+merger = PdfFileMerger()
+
+for pdf in pdfs:
+    merger.append(pdf)
+
+merger.write(new_Report)
+merger.close()
+
+os.remove(old_Report)
