@@ -1,3 +1,4 @@
+#OSTAJE DA SE PROMENI PROMENLJIVA path (45. linija)
 import os
 import datetime
 from PyPDF2 import PdfFileMerger, PdfFileWriter
