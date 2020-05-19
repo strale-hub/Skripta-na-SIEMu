@@ -11,33 +11,48 @@ current_year = current_date.year
 current_month = current_date.month
 
 
+
 if (current_month == 1):
     last_year = current_year - 1
     last_month = 12
+    last_month_2 = 11
 else:
     last_year = current_year
-    last_month = current_month-1
+    last_month = current_month - 1
+    last_month_2 = current_month - 2
+
 
 
 current_year_str = str(current_year)
 last_year_str = str(last_year)
 current_month_str_t = str(current_month)
 last_month_str_t = str(last_month)
+last_month_2_str_t = str(last_month_2)
 
 
 if current_month < 10:
     current_month_str = '0' + current_month_str_t
 else:
     current_month_str = current_month_str_t
+    
 if last_month < 10:
     last_month_str = '0' + last_month_str_t
 else:
-     last_month_str = last_month_str_t
+    last_month_str = last_month_str_t
+     
+if last_month_2 < 10:
+    last_month_2_str = '0' + last_month_2_str_t
+else:
+    last_month_2_str = last_month_2_str_t
 
-old_Report = "Rezultat_" + last_year_str + "_" + last_month_str + ".pdf"
-new_Report = "Rezultat_" + current_year_str + "_" + current_month_str + ".pdf"
-#print(old_Report)
-#print(new_Report)
+
+old_Report = "Rezultat_" + last_year_str + "_" + last_month_2_str + ".pdf"
+if (last_month == 12):
+    new_Report = "Rezultat_" + last_year_str + "_" + "complete" + ".pdf"
+else:
+    new_Report = "Rezultat_" + last_year_str + "_" + last_month_str + ".pdf"
+print(old_Report)
+print(new_Report)
 
 
 
@@ -47,11 +62,15 @@ pdfs = []
 # r=root, d=directories, p = pdfs
 for r,d,p in os.walk(path):
     for pdf in p:
-        if ((old_Report in pdf and last_year_str == current_year_str) or ('AnyConnect_M_' in pdf and '.pdf' in pdf and pdf[13:17] == current_year_str and pdf[18:20] == current_month_str)):
+        if ((old_Report in pdf  and last_month_2_str != '0') or ('AnyConnect_M_' in pdf and '.pdf' in pdf and pdf[13:17] == current_year_str and pdf[18:20] == current_month_str)):
             pdfs.append(os.path.join(r, pdf))
-#print(pdfs)
+
+print(pdfs)
 
 
+
+#pdfs.sort(reverse=True)
+print(pdfs)
 
 #Spajanje pdf-ova
 merger = PdfFileMerger()
@@ -62,7 +81,9 @@ for pdf in pdfs:
 merger.write(new_Report)
 merger.close()
 
-if (last_month_str != '12'):
+"""
+if (last_month_2_str != '12'):
     os.remove(old_Report)
+"""
 
 
