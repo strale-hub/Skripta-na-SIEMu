@@ -6,32 +6,47 @@ from PyPDF2 import PdfFileMerger, PdfFileWriter
 
 #Odredjivanje datuma
 current_date = datetime.datetime.now()
-new_month = current_date.month
-old_month = new_month-1
-new_month_str_t = str(new_month)
-old_month_str_t = str(old_month)
+current_year = current_date.year
+current_month = current_date.month
 
-if new_month < 10:
-    new_month_str = '0' + new_month_str_t
-if old_month < 10:
-    old_month_str = '0' + old_month_str_t
 
-old_Report = "Rezultat" + old_month_str + ".pdf"
-new_Report = "Rezultat" + new_month_str + ".pdf"
-montly_Report = "Report_Name_Montly"
+if (current_month == 1):
+    last_year = current_year - 1
+    last_month = 12
+else:
+    last_year = current_year
+    last_month = current_month-1
+
+
+current_year_str = str(current_year)
+last_year_str = str(last_year)
+current_month_str_t = str(current_month)
+last_month_str_t = str(last_month)
+
+
+if current_month < 10:
+    current_month_str = '0' + current_month_str_t
+if last_month < 10:
+    last_month_str = '0' + last_month_str_t
+
+
+old_Report = "Rezultat_" + last_year_str + "_" + last_month_str + ".pdf"
+new_Report = "Rezultat_" + current_year_str + "_" + current_month_str + ".pdf"
 #print(old_Report)
 #print(new_Report)
 
 
-#Pronalazenje rezultnog pdf- i reporta iz tog meseca
+
+#Pronalazenje rezultnog pdf-a i reporta iz tog meseca
 path = "C:\\Users\\strahinja.soskic\\Desktop\\BackUP\\Programiranje\\Python\\CSV_python\\"
 pdfs = []
 # r=root, d=directories, p = pdfs
 for r,d,p in os.walk(path):
     for pdf in p:
-        if (old_Report in pdf or ('Report_Name_Montly' in pdf and '.pdf' in pdf and pdf[24:26] == old_month_str)): #Ovde treba promenti ime reporta i opseg gde se nalaze karakteri za mesec
+        if ((old_Report in pdf and last_year_str == current_year_str) or ('Report_Name_Montly' in pdf and '.pdf' in pdf and pdf[19:23] == last_year_str and pdf[24:26] == last_month_str)):
             pdfs.append(os.path.join(r, pdf))
 print(pdfs)
+
 
 
 #Spajanje pdf-ova
@@ -44,3 +59,4 @@ merger.write(new_Report)
 merger.close()
 
 os.remove(old_Report)
+
