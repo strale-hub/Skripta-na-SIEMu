@@ -26,9 +26,12 @@ last_month_str_t = str(last_month)
 
 if current_month < 10:
     current_month_str = '0' + current_month_str_t
+else:
+    current_month_str = current_month_str_t
 if last_month < 10:
     last_month_str = '0' + last_month_str_t
-
+else:
+     last_month_str = last_month_str_t
 
 old_Report = "Rezultat_" + last_year_str + "_" + last_month_str + ".pdf"
 new_Report = "Rezultat_" + current_year_str + "_" + current_month_str + ".pdf"
@@ -43,9 +46,9 @@ pdfs = []
 # r=root, d=directories, p = pdfs
 for r,d,p in os.walk(path):
     for pdf in p:
-        if ((old_Report in pdf and last_year_str == current_year_str) or ('Report_Name_Montly' in pdf and '.pdf' in pdf and pdf[19:23] == last_year_str and pdf[24:26] == last_month_str)):
+        if ((old_Report in pdf and last_year_str == current_year_str) or ('AnyConnect_M_' in pdf and '.pdf' in pdf and pdf[13:17] == current_year_str and pdf[18:20] == current_month_str)):
             pdfs.append(os.path.join(r, pdf))
-print(pdfs)
+#print(pdfs)
 
 
 
@@ -58,5 +61,7 @@ for pdf in pdfs:
 merger.write(new_Report)
 merger.close()
 
-os.remove(old_Report)
+if (last_month_str != '12'):
+    os.remove(old_Report)
+
 
