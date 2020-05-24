@@ -5,15 +5,14 @@ import datetime
 from PyPDF2 import PdfFileMerger, PdfFileWriter
 
 
-"""
+
 #Definisanje argumenta
 parser = argparse.ArgumentParser(description = 'Argumenti')
 parser.add_argument ("-m", required = True, help = "Import...")
 args = parser.parse_args()
 months_s = args.m
 months = int(months_s)
-"""
-months = 6
+
 
 
 #Zadavanje imena novom izvestaju
