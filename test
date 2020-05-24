@@ -1,66 +1,107 @@
+# !python
 import os
 import argparse
 import datetime
 from PyPDF2 import PdfFileMerger, PdfFileWriter
-import numpy as np
 
+
+"""
+#Definisanje argumenta
+parser = argparse.ArgumentParser(description = 'Argumenti')
+parser.add_argument ("-m", required = True, help = "Import...")
+args = parser.parse_args()
+months_s = args.m
+months = int(months_s)
+"""
 months = 6
 
+
+#Zadavanje imena novom izvestaju
 current_date = datetime.datetime.now()
 current_month = current_date.strftime('%m')
-current_year = current_date.strftime('%y')
+current_year = current_date.strftime('%Y')
+
+new_Report = 'AnyConnect_' + current_month + '_' + current_year
 
 
-#Pronalazenje rezultnog pdf-a i reporta iz tog meseca
+
+#Pronalazenje mesecnih izvestaja
 path = "C:\\Users\\strahinja.soskic\\Desktop\\BackUP\\Programiranje\\Python\\CSV_python\\"
 pdfs = []
+pdfs_with_path = []
+#pdfs_no_path = []
 # r=root, d=directories, p = pdfs
 for r,d,p in os.walk(path):
     for pdf in p:
         if ('AnyConnect_M_' in pdf and '.pdf' in pdf):
-            pdfs.append(os.path.join(r, pdf))
+            #pdfs.append(os.path.join(r, pdf))
+            pdfs.append(os.path.join(pdf[0:20]))
+            pdfs_with_path.append(os.path.join(r, pdf))
             
 pdfs.sort(reverse=True)
+pdfs_with_path.sort(reverse=True)
 topn = pdfs[:months]
+topn_with_path = pdfs_with_path[:months]
+print(topn)
 
+
+
+#Odredjeivanje koji bi meseci trenali da budu u poslednjih unetih meseci
 array_monts = ['01','02','03','04','05','06','07','08','09','10','11','12']
-array_monts_from_reports = []
-for i in range(len(topn)):
-    a = pdfs[i]
-    b = a[91:93]
-    c = a[88:90]
-    d = b+'.'+c
-    array_monts_from_reports.append(d)
-print(array_monts_from_reports)
-
-
-
 array_help = []
-t = int(current_month)-1 #indeks od kojeg krece brojanje meseci u nazad
-
-temp_year_str = current_year
+index = int(current_month)-1
+temp_year = int(current_year)
 for i in range(months):
-    e = array_monts[t]+'.'+temp_year_str 
-    array_help.append(e)
-    
-    if (t==0):
-        t = 11
-        temp_year = int(temp_year_str)-1
-        temp_year_str = str(temp_year)
+    report = 'AnyConnect_M_' + str(temp_year) + '_' + array_monts[index]
+    array_help.append(report)
+    if (index==0):
+        index = 11
+        temp_year = temp_year-1
     else:
-        t = t-1
-print(array_help)
+        index = index-1
+#print(array_help)
 
 
-array_monts_from_reports_np = np.array(array_monts_from_reports)
-array_help_np = np.array(array_help)
 
-print(array_monts_from_reports_np)
-print(array_help_np)
-c20 = np.array
-print(c20)
-c20 = np.equal(array_monts_from_reports_np, array_help_np)
-print(c20)
+#Poredjenje prethodna dva niza i tu saznajemo da li fali neki izvestaj
+c1 = 0
+missing = []
+for i in range(months):
+    if (array_help[i] != topn[i]):
+        missing_report = str((array_help[i])[18:20]) + '.' + str((array_help[i])[15:17]) + '.'      
+        missing.append(missing_report)
+        c1 = c1+1
+#print(missing)
+
+
+
+#
+
+
+
+
+#Ukoliko fali neki izvestaj korisnik se pita da li zeli da ih spoji bez tih koji fali
+if (c1!=0):
+    #oldest_month = int(current_month)-months
+    #a = []
+    if c1==1:
+        print("U poslednjih",months,"meseci nedostaje izveštaj za",missing)
+    else:
+        print("U poslednjih",months,"meseci nedostaju izveštaj za",missing)
+  
+
+
+"""
+#Spajanje pdf-ova
+merger = PdfFileMerger()
+
+for pdf in topn_with_path:
+    merger.append(pdf)
+
+merger.write(new_Report)
+merger.close()
+"""
+
 
 
 
