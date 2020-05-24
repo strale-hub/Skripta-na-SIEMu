@@ -1,0 +1,66 @@
+import os
+import argparse
+import datetime
+from PyPDF2 import PdfFileMerger, PdfFileWriter
+import numpy as np
+
+months = 6
+
+current_date = datetime.datetime.now()
+current_month = current_date.strftime('%m')
+current_year = current_date.strftime('%y')
+
+
+#Pronalazenje rezultnog pdf-a i reporta iz tog meseca
+path = "C:\\Users\\strahinja.soskic\\Desktop\\BackUP\\Programiranje\\Python\\CSV_python\\"
+pdfs = []
+# r=root, d=directories, p = pdfs
+for r,d,p in os.walk(path):
+    for pdf in p:
+        if ('AnyConnect_M_' in pdf and '.pdf' in pdf):
+            pdfs.append(os.path.join(r, pdf))
+            
+pdfs.sort(reverse=True)
+topn = pdfs[:months]
+
+array_monts = [1,2,3,4,5,6,7,8,9,10,11,12]
+array_monts_from_reports = []
+for i in range(len(topn)):
+    a = pdfs[i]
+    b = int(a[91:93])
+    array_monts_from_reports.append(b)
+print(array_monts_from_reports)
+
+
+
+array_help = []
+t = array_monts_from_reports[0]-1 #indeks od kojeg krece brojanje meseci u nazad
+
+
+for i in range(months):
+    array_help.append(array_monts[t])
+    if (t==0):
+        t = 11
+    else:
+        t = t-1
+print(array_help)
+
+array_monts_from_reports_np = np.array(array_monts_from_reports)
+array_help_np = np.array(array_help)
+
+print(array_monts_from_reports_np)
+print(array_help_np)
+c = np.array
+c = np.equal(array_monts_from_reports_np, array_help_np)
+print(c)
+"""
+c1 = 0
+for i in range(months):
+    if (array_help[i] != array_monts_from_reports[i]):
+        print(array_monts_from_reports[i])
+"""
+
+
+
+
+
