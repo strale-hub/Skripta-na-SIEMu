@@ -23,42 +23,57 @@ for r,d,p in os.walk(path):
 pdfs.sort(reverse=True)
 topn = pdfs[:months]
 
-array_monts = [1,2,3,4,5,6,7,8,9,10,11,12]
+array_monts = ['01','02','03','04','05','06','07','08','09','10','11','12']
 array_monts_from_reports = []
 for i in range(len(topn)):
     a = pdfs[i]
-    b = int(a[91:93])
-    array_monts_from_reports.append(b)
+    b = a[91:93]
+    c = a[88:90]
+    d = b+'.'+c
+    array_monts_from_reports.append(d)
 print(array_monts_from_reports)
 
 
 
 array_help = []
-t = array_monts_from_reports[0]-1 #indeks od kojeg krece brojanje meseci u nazad
+t = int(current_month)-1 #indeks od kojeg krece brojanje meseci u nazad
 
-
+temp_year_str = current_year
 for i in range(months):
-    array_help.append(array_monts[t])
+    e = array_monts[t]+'.'+temp_year_str 
+    array_help.append(e)
+    
     if (t==0):
         t = 11
+        temp_year = int(temp_year_str)-1
+        temp_year_str = str(temp_year)
     else:
         t = t-1
 print(array_help)
+
 
 array_monts_from_reports_np = np.array(array_monts_from_reports)
 array_help_np = np.array(array_help)
 
 print(array_monts_from_reports_np)
 print(array_help_np)
-c = np.array
-c = np.equal(array_monts_from_reports_np, array_help_np)
-print(c)
-"""
-c1 = 0
-for i in range(months):
-    if (array_help[i] != array_monts_from_reports[i]):
-        print(array_monts_from_reports[i])
-"""
+c20 = np.array
+print(c20)
+c20 = np.equal(array_monts_from_reports_np, array_help_np)
+print(c20)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
