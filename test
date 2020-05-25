@@ -73,7 +73,7 @@ for i in range(months):
         c1 = c1+1
     else:
         not_missing_report = str((array_help[i])[18:20]) + '.' + str((array_help[i])[15:17]) + '.'
-        not_missing.append(not_missing_report)
+        not_missing.append(os.path.join(path, not_missing_report)
 print(missing)
 print(not_missing)
 
