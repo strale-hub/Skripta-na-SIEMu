@@ -58,23 +58,25 @@ for i in range(months):
         temp_year = temp_year-1
     else:
         index = index-1
-#print(array_help)
+print(array_help)
 
 
 
 #Poredjenje prethodna dva niza i tu saznajemo da li fali neki izvestaj
 c1 = 0
 missing = []
+not_missing = []
 for i in range(months):
-    if (array_help[i] != topn[i]):
+    if (array_help[i] not in topn):
         missing_report = str((array_help[i])[18:20]) + '.' + str((array_help[i])[15:17]) + '.'      
         missing.append(missing_report)
         c1 = c1+1
-#print(missing)
+    else:
+        not_missing_report = str((array_help[i])[18:20]) + '.' + str((array_help[i])[15:17]) + '.'
+        not_missing.append(not_missing_report)
+print(missing)
+print(not_missing)
 
-
-
-#
 
 
 
@@ -100,22 +102,3 @@ for pdf in topn_with_path:
 merger.write(new_Report)
 merger.close()
 """
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
